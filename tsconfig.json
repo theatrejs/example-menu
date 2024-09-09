@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+
+        "allowJs": true,
+        "baseUrl": "./",
+        "checkJs": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "noEmit": true,
+        "outDir": "distribution",
+        "paths": {
+
+            "actors/*": ["sources/actors/*"],
+            "stages/*": ["sources/stages/*"]
+        },
+        "resolveJsonModule": true,
+        "strict": true,
+        "strictNullChecks": false,
+        "target": "esnext"
+    },
+    "exclude": [
+
+        "distribution"
+    ],
+    "include": [
+
+        "node_modules/@theatrejs/theatrejs",
+
+        "index.js",
+        "sources/**/*.js",
+        "types/**/*.d.ts",
+        "types/**/*.jsdoc.js",
+    ]
+}

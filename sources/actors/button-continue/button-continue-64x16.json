@@ -1,0 +1,52 @@
+{
+    "sprite": {
+
+        "width": 192,
+        "height": 80
+    },
+    "frames": {
+
+        "disabled": [
+
+            {
+                "x": 64,
+                "y": 16,
+                "width": 64,
+                "height": 16
+            }
+        ],
+        "idle": [
+
+            {
+                "x": 64,
+                "y": 32,
+                "width": 64,
+                "height": 16
+            }
+        ],
+        "focus": [
+
+            {
+                "x": 64,
+                "y": 48,
+                "width": 64,
+                "height": 16
+            }
+        ],
+        "active": [
+
+            {
+                "x": 64,
+                "y": 64,
+                "width": 64,
+                "height": 16
+            },
+            {
+                "x": 128,
+                "y": 64,
+                "width": 64,
+                "height": 16
+            }
+        ]
+    }
+}

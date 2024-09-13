@@ -27,9 +27,8 @@
 
         "node_modules/@theatrejs/theatrejs",
 
-        "index.js",
         "sources/**/*.js",
-        "types/**/*.d.ts",
-        "types/**/*.jsdoc.js",
+        "sources/types/**/*.d.ts",
+        "sources/types/**/*.jsdoc.js",
     ]
 }

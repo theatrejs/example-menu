@@ -8,9 +8,10 @@
     "devDependencies": {
 
         "file-loader": "6.2.0",
-        "webpack": "5.60.0",
+        "webpack": "5.94.0",
         "webpack-cli": "4.10.0",
-        "webpack-dev-server": "4.8.0"
+        "webpack-dev-server": "4.8.0",
+        "webpack-merge": "5.0.0"
     },
     "engines": {
 
@@ -44,7 +45,12 @@
     },
     "scripts": {
 
-        "distribution": "webpack --config ./webpack.production.js",
+        "distribution": "npm run distribution:clean && npm run distribution:generate",
+        "distribution:clean": "rm -rf ./distribution/bundle",
+        "distribution:generate": "webpack --config ./webpack.production.js",
+        "github-pages": "npm run github-pages:clean && npm run github-pages:generate",
+        "github-pages:clean": "rm -rf ./docs",
+        "github-pages:generate": "cp -r ./distribution ./docs",
         "start": "webpack-dev-server --config ./webpack.development.js --port 1234"
     }
 }

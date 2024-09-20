@@ -1,4 +1,4 @@
-import {ActorPreloadable, EVENTCODES, FiniteStateMachine, Sound, STORAGE, Vector2, Vibration} from '@theatrejs/theatrejs';
+import {EVENTCODES, FACTORIES, FiniteStateMachine, Sound, STORAGE, Vector2, Vibration} from '@theatrejs/theatrejs';
 
 import ActorButtonContinue from 'actors/button-continue/actor-button-continue.js';
 import ActorButtonDlc from 'actors/button-dlc/actor-button-dlc.js';
@@ -8,7 +8,7 @@ import ActorButtonQuit from 'actors/button-quit/actor-button-quit.js';
 import soundNavigation from './navigation.mp3';
 import soundSelection from './selection.mp3';
 
-class ActorMenu extends ActorPreloadable([ActorButtonContinue, ActorButtonDlc, ActorButtonNewGame, ActorButtonQuit, soundNavigation, soundSelection]) {
+class ActorMenu extends FACTORIES.ActorPreloadable([ActorButtonContinue, ActorButtonDlc, ActorButtonNewGame, ActorButtonQuit, soundNavigation, soundSelection]) {
 
     /**
      * Stores the finite state machine.

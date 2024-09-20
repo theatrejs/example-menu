@@ -1,9 +1,9 @@
-import {AABB, ActorPreloadable, Sprite, Timeline, TimelineKeyframe, Vector2} from '@theatrejs/theatrejs';
+import {AABB, FACTORIES, Sprite, Timeline, TimelineKeyframe, Vector2} from '@theatrejs/theatrejs';
 
 import dataButtonContinue from './button-continue-64x16.json';
 import textureButtonContinue from './button-continue-64x16.png';
 
-class ActorButtonContinue extends ActorPreloadable([textureButtonContinue]) {
+class ActorButtonContinue extends FACTORIES.ActorPreloadable([textureButtonContinue]) {
 
     /**
      * Stores sprite data.

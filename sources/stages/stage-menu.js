@@ -1,8 +1,8 @@
-import {StagePreloadable, Vector2, Vector3} from '@theatrejs/theatrejs';
+import {FACTORIES, Vector2, Vector3} from '@theatrejs/theatrejs';
 
 import ActorMenu from 'actors/actor-menu/actor-menu.js';
 
-class StageMenu extends StagePreloadable([ActorMenu]) {
+class StageMenu extends FACTORIES.StagePreloadable([ActorMenu]) {
 
     /**
      * @type {import('@theatrejs/theatrejs').Stage['onCreate']}

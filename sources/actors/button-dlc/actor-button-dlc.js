@@ -1,9 +1,9 @@
-import {AABB, ActorPreloadable, Sprite, Timeline, TimelineKeyframe, Vector2} from '@theatrejs/theatrejs';
+import {AABB, FACTORIES, Sprite, Timeline, TimelineKeyframe, Vector2} from '@theatrejs/theatrejs';
 
 import dataButtonDlc from './button-dlc-64x16.json';
 import textureButtonDlc from './button-dlc-64x16.png';
 
-class ActorButtonDlc extends ActorPreloadable([textureButtonDlc]) {
+class ActorButtonDlc extends FACTORIES.ActorPreloadable([textureButtonDlc]) {
 
     /**
      * Stores sprite data.

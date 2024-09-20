@@ -2,7 +2,7 @@
     "author": "Alexandre Blondeau",
     "dependencies": {
 
-        "@theatrejs/theatrejs": "1.1.0"
+        "@theatrejs/theatrejs": "1.3.0"
     },
     "description": "🎮 A Game Menu example.",
     "devDependencies": {

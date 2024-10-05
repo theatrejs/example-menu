@@ -1,16 +1,17 @@
 import {AABB, FACTORIES, Sprite, Timeline, TimelineKeyframe, Vector2} from '@theatrejs/theatrejs';
 
-import dataButtonNewGame from './button-new-game-64x16.json';
-import textureButtonNewGame from './button-new-game-64x16.png';
+import * as PLUGINASEPRITE from '@theatrejs/plugin-aseprite';
 
-class ActorButtonNewGame extends FACTORIES.ActorPreloadable([textureButtonNewGame]) {
+import asepriteButtonNewGame from './button-new-game-64x16.aseprite';
+
+class ActorButtonNewGame extends FACTORIES.ActorWithPreloadables([PLUGINASEPRITE.FACTORIES.PreloadableAseprite(asepriteButtonNewGame)]) {
 
     /**
-     * Stores sprite data.
-     * @type {typedatasprite}
+     * Stores the spritesheet.
+     * @type {PLUGINASEPRITE.Aseprite<('activated' | 'disabled' | 'focus' | 'idle')>}
      * @private
      */
-    $data;
+    $spritesheet;
 
     /**
      * Stores the timeline.
@@ -20,58 +21,12 @@ class ActorButtonNewGame extends FACTORIES.ActorPreloadable([textureButtonNewGam
     $timeline;
 
     /**
-     * Creates an animated timeline for the spritesheet.
-     * @param {typedataspriteframe[]} $frames The sprite frames data.
-     * @param {typedataspritesize} $size The sprite size data.
-     * @returns {import('@theatrejs/theatrejs').Timeline}
-     * @private
-     */
-    $createTimeline($frames, $size) {
-
-        return new Timeline([
-
-            ...($frames.map(($frame, $index) => {
-
-                const {x, y, width, height} = $frame;
-
-                const sprite = new Sprite({
-
-                    $frameSource: new AABB(
-
-                        new Vector2(x / $size.width, y / $size.height),
-                        new Vector2((x + width) / $size.width, (y + height) / $size.height)
-                    ),
-                    $sizeTarget: new Vector2(width, height),
-                    $textureColor: textureButtonNewGame
-                });
-
-                return new TimelineKeyframe({
-
-                    $onEnter: () => {
-
-                        this.setSprite(sprite);
-                    },
-                    $timecode: $index * (1000 / 10)
-                });
-            })),
-            new TimelineKeyframe({
-
-                $onEnter: ($timeline) => {
-
-                    $timeline.seekTimecode(0);
-                },
-                $timecode: $frames.length * (1000 / 10)
-            })
-        ]);
-    }
-
-    /**
      * Triggers the 'activate' action.
      * @public
      */
     actionActivate() {
 
-        this.$timeline = this.$createTimeline(this.$data.frames.active, this.$data.sprite);
+        this.$timeline = this.$spritesheet.createTimeline({$actor: this, $framerate: 10, $loop: true, $tag: 'activated'});
         this.$timeline.seekTimecode(0);
     }
 
@@ -81,7 +36,7 @@ class ActorButtonNewGame extends FACTORIES.ActorPreloadable([textureButtonNewGam
      */
     actionDisable() {
 
-        this.$timeline = this.$createTimeline(this.$data.frames.disabled, this.$data.sprite);
+        this.$timeline = this.$spritesheet.createTimeline({$actor: this, $framerate: 10, $loop: true, $tag: 'disabled'});
         this.$timeline.seekTimecode(0);
     }
 
@@ -91,7 +46,7 @@ class ActorButtonNewGame extends FACTORIES.ActorPreloadable([textureButtonNewGam
      */
     actionFocus() {
 
-        this.$timeline = this.$createTimeline(this.$data.frames.focus, this.$data.sprite);
+        this.$timeline = this.$spritesheet.createTimeline({$actor: this, $framerate: 10, $loop: true, $tag: 'focus'});
         this.$timeline.seekTimecode(0);
     }
 
@@ -101,7 +56,7 @@ class ActorButtonNewGame extends FACTORIES.ActorPreloadable([textureButtonNewGam
      */
     actionRest() {
 
-        this.$timeline = this.$createTimeline(this.$data.frames.idle, this.$data.sprite);
+        this.$timeline = this.$spritesheet.createTimeline({$actor: this, $framerate: 10, $loop: true, $tag: 'idle'});
         this.$timeline.seekTimecode(0);
     }
 
@@ -110,7 +65,7 @@ class ActorButtonNewGame extends FACTORIES.ActorPreloadable([textureButtonNewGam
      */
     onCreate() {
 
-        this.$data = dataButtonNewGame;
+        this.$spritesheet = asepriteButtonNewGame;
 
         this.actionRest();
     }

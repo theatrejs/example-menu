@@ -8,7 +8,15 @@ import ActorButtonQuit from 'actors/button-quit/actor-button-quit.js';
 import soundNavigation from './navigation.mp3';
 import soundSelection from './selection.mp3';
 
-class ActorMenu extends FACTORIES.ActorPreloadable([ActorButtonContinue, ActorButtonDlc, ActorButtonNewGame, ActorButtonQuit, soundNavigation, soundSelection]) {
+class ActorMenu extends FACTORIES.ActorWithPreloadables([
+
+    ActorButtonContinue,
+    ActorButtonDlc,
+    ActorButtonNewGame,
+    ActorButtonQuit,
+    FACTORIES.PreloadableSound(soundNavigation),
+    FACTORIES.PreloadableSound(soundSelection)
+]) {
 
     /**
      * Stores the finite state machine.

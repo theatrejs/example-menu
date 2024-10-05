@@ -8,7 +8,7 @@
         "module": "esnext",
         "moduleResolution": "node",
         "noEmit": true,
-        "outDir": "distribution",
+        "outDir": "types",
         "paths": {
 
             "actors/*": ["sources/actors/*"],
@@ -25,6 +25,7 @@
     ],
     "include": [
 
+        "node_modules/@theatrejs/plugin-aseprite",
         "node_modules/@theatrejs/theatrejs",
 
         "sources/**/*.js",

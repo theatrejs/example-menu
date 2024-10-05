@@ -1,5 +1,9 @@
 const path = require('path');
 
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 function configuration() {
 
     return {
@@ -25,6 +29,19 @@ function configuration() {
                 {
                     'test': /\.jpeg|\.jpg|\.png$/,
                     'type': 'asset/resource'
+                },
+                {
+                    'test': /\.aseprite$/,
+                    'use': [
+
+                        {
+                            'loader': '@theatrejs/loader-aseprite',
+                            'options': {
+
+                                'aseprite': process.env.ASEPRITE
+                            }
+                        }
+                    ]
                 }
             ]
         },

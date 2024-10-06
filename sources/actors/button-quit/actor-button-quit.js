@@ -1,4 +1,4 @@
-import {AABB, FACTORIES, Sprite, Timeline, TimelineKeyframe, Vector2} from '@theatrejs/theatrejs';
+import {Actor, FACTORIES, Timeline} from '@theatrejs/theatrejs';
 
 import * as PLUGINASEPRITE from '@theatrejs/plugin-aseprite';
 
@@ -15,7 +15,7 @@ class ActorButtonQuit extends FACTORIES.ActorWithPreloadables([PLUGINASEPRITE.FA
 
     /**
      * Stores the timeline.
-     * @type {import('@theatrejs/theatrejs').Timeline}
+     * @type {Timeline}
      * @private
      */
     $timeline;
@@ -61,7 +61,7 @@ class ActorButtonQuit extends FACTORIES.ActorWithPreloadables([PLUGINASEPRITE.FA
     }
 
     /**
-     * @type {import('@theatrejs/theatrejs').Actor['onCreate']}
+     * @type {Actor['onCreate']}
      */
     onCreate() {
 
@@ -71,7 +71,7 @@ class ActorButtonQuit extends FACTORIES.ActorWithPreloadables([PLUGINASEPRITE.FA
     }
 
     /**
-     * @type {import('@theatrejs/theatrejs').Actor['onTick']}
+     * @type {Actor['onTick']}
      */
     onTick($timetick) {
 

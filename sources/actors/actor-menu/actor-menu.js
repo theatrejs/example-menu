@@ -1,4 +1,4 @@
-import {EVENTCODES, FACTORIES, FiniteStateMachine, Sound, STORAGE, Vector2, Vibration} from '@theatrejs/theatrejs';
+import {Actor, EVENTCODES, FACTORIES, FiniteStateMachine, Sound, STORAGE, Vector2, Vibration} from '@theatrejs/theatrejs';
 
 import ActorButtonContinue from 'actors/button-continue/actor-button-continue.js';
 import ActorButtonDlc from 'actors/button-dlc/actor-button-dlc.js';
@@ -20,13 +20,13 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
 
     /**
      * Stores the finite state machine.
-     * @type {import('@theatrejs/theatrejs').FiniteStateMachine<('INITIATE' | 'CONTINUESELECTED' | 'CONTINUEACTIVATED' | 'NEWGAMESELECTED' | 'NEWGAMEACTIVATED' | 'QUITSELECTED' | 'QUITACTIVATED')>}
+     * @type {FiniteStateMachine<('INITIATE' | 'CONTINUESELECTED' | 'CONTINUEACTIVATED' | 'NEWGAMESELECTED' | 'NEWGAMEACTIVATED' | 'QUITSELECTED' | 'QUITACTIVATED')>}
      * @private
      */
     $finiteStateMachineMenu;
 
     /**
-     * @type {import('@theatrejs/theatrejs').Actor['onBeforeRemove']}
+     * @type {Actor['onBeforeRemove']}
      */
     onBeforeRemove() {
 
@@ -37,7 +37,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
     }
 
     /**
-     * @type {import('@theatrejs/theatrejs').Actor['onCreate']}
+     * @type {Actor['onCreate']}
      */
     onCreate() {
 
@@ -320,7 +320,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
     }
 
     /**
-     * @type {import('@theatrejs/theatrejs').Actor['onTick']}
+     * @type {Actor['onTick']}
      */
     onTick($timetick) {
 

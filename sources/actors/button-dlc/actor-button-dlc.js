@@ -1,4 +1,4 @@
-import {FACTORIES} from '@theatrejs/theatrejs';
+import {Actor, FACTORIES, Timeline} from '@theatrejs/theatrejs';
 
 import * as PLUGINASEPRITE from '@theatrejs/plugin-aseprite';
 
@@ -15,7 +15,7 @@ class ActorButtonDlc extends FACTORIES.ActorWithPreloadables([PLUGINASEPRITE.FAC
 
     /**
      * Stores the timeline.
-     * @type {import('@theatrejs/theatrejs').Timeline}
+     * @type {Timeline}
      * @private
      */
     $timeline;
@@ -61,7 +61,7 @@ class ActorButtonDlc extends FACTORIES.ActorWithPreloadables([PLUGINASEPRITE.FAC
     }
 
     /**
-     * @type {import('@theatrejs/theatrejs').Actor['onCreate']}
+     * @type {Actor['onCreate']}
      */
     onCreate() {
 
@@ -71,7 +71,7 @@ class ActorButtonDlc extends FACTORIES.ActorWithPreloadables([PLUGINASEPRITE.FAC
     }
 
     /**
-     * @type {import('@theatrejs/theatrejs').Actor['onTick']}
+     * @type {Actor['onTick']}
      */
     onTick($timetick) {
 

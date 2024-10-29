@@ -1,4 +1,6 @@
-import {Actor, EVENTCODES, FACTORIES, FiniteStateMachine, Sound, STORAGE, Vector2, Vibration} from '@theatrejs/theatrejs';
+import {Actor, EVENTCODES, FACTORIES, FiniteStateMachine, Sound, STORAGE, UTILS, Vector2, Vibration} from '@theatrejs/theatrejs';
+
+import StageMenu from 'stages/stage-menu.js';
 
 import ActorButtonContinue from 'actors/button-continue/actor-button-continue.js';
 import ActorButtonDlc from 'actors/button-dlc/actor-button-dlc.js';
@@ -19,6 +21,34 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
 ]) {
 
     /**
+     * Stores the 'continue' button.
+     * @type {ActorButtonContinue}
+     * @private
+     */
+    $buttonContinue;
+
+    /**
+     * Stores the 'new game' button.
+     * @type {ActorButtonNewGame}
+     * @private
+     */
+    $buttonNewGame;
+
+    /**
+     * Stores the 'DLC' button.
+     * @type {ActorButtonDlc}
+     * @private
+     */
+    $buttonDlc;
+
+    /**
+     * Stores the 'quit' button.
+     * @type {ActorButtonQuit}
+     * @private
+     */
+    $buttonQuit;
+
+    /**
      * Stores the finite state machine.
      * @type {FiniteStateMachine<('INITIATE' | 'CONTINUESELECTED' | 'CONTINUEACTIVATED' | 'NEWGAMESELECTED' | 'NEWGAMEACTIVATED' | 'QUITSELECTED' | 'QUITACTIVATED')>}
      * @private
@@ -30,10 +60,10 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
      */
     onBeforeRemove() {
 
-        this.followers.forEach(($follower) => {
-
-            this.stage.removeActor($follower);
-        });
+        this.stage.removeActor(this.$buttonContinue);
+        this.stage.removeActor(this.$buttonNewGame);
+        this.stage.removeActor(this.$buttonDlc);
+        this.stage.removeActor(this.$buttonQuit);
     }
 
     /**
@@ -41,26 +71,22 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
      */
     onCreate() {
 
-        const DEBOUNCEINITIATE = 800;
-        const DEBOUNCENAVIGATION = 200;
-        const DEBOUNCESELECTION = 800;
-
-        const buttonContinue = /** @type {ActorButtonContinue} */(this.stage.createActor(ActorButtonContinue)).translate(new Vector2(0, 24 * 1.5));
-        const buttonNewGame = /** @type {ActorButtonNewGame} */(this.stage.createActor(ActorButtonNewGame)).translate(new Vector2(0, 24 * 0.5));
-        const buttonDlc = /** @type {ActorButtonDlc} */(this.stage.createActor(ActorButtonDlc)).translate(new Vector2(0, -24 * 0.5));
-        const buttonQuit = /** @type {ActorButtonQuit} */(this.stage.createActor(ActorButtonQuit)).translate(new Vector2(0, -24 * 1.5));
+        this.$buttonContinue = /** @type {ActorButtonContinue} */(this.stage.createActor(ActorButtonContinue)).translate(new Vector2(0, 24 * 1.5));
+        this.$buttonNewGame = /** @type {ActorButtonNewGame} */(this.stage.createActor(ActorButtonNewGame)).translate(new Vector2(0, 24 * 0.5));
+        this.$buttonDlc = /** @type {ActorButtonDlc} */(this.stage.createActor(ActorButtonDlc)).translate(new Vector2(0, -24 * 0.5));
+        this.$buttonQuit = /** @type {ActorButtonQuit} */(this.stage.createActor(ActorButtonQuit)).translate(new Vector2(0, -24 * 1.5));
 
         if (STORAGE.get('continue') !== true) {
 
-            buttonContinue.actionDisable();
+            this.$buttonContinue.actionDisable();
         }
 
-        buttonDlc.actionDisable();
+        this.$buttonDlc.actionDisable();
 
-        this.addFollower(buttonContinue);
-        this.addFollower(buttonNewGame);
-        this.addFollower(buttonDlc);
-        this.addFollower(buttonQuit);
+        const DEBOUNCEINITIATE = 800;
+        const DEBOUNCENAVIGATION = 200;
+        const DEBOUNCEQUIT = 1200;
+        const DEBOUNCESELECTION = 800;
 
         const checkCommandActivate = () => {
 
@@ -103,7 +129,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                 $state: 'CONTINUESELECTED',
                 $onEnter: ({$previous}) => {
 
-                    buttonContinue.actionFocus();
+                    this.$buttonContinue.actionFocus();
 
                     if ($previous === 'INITIATE') {
 
@@ -121,7 +147,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                         $volume: 0.5
                     }));
                 },
-                $onLeave: () => buttonContinue.actionRest(),
+                $onLeave: () => this.$buttonContinue.actionRest(),
                 $transitions: [
 
                     {
@@ -138,7 +164,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                 $state: 'CONTINUEACTIVATED',
                 $onEnter: () => {
 
-                    buttonContinue.actionActivate();
+                    this.$buttonContinue.actionActivate();
 
                     this.addSound(new Sound({
 
@@ -155,7 +181,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                 },
                 $onLeave: () => {
 
-                    buttonContinue.actionRest();
+                    this.$buttonContinue.actionRest();
 
                     console.log('Continue');
                 },
@@ -171,7 +197,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                 $state: 'NEWGAMESELECTED',
                 $onEnter: ({$previous}) => {
 
-                    buttonNewGame.actionFocus();
+                    this.$buttonNewGame.actionFocus();
 
                     if ($previous === 'INITIATE') {
 
@@ -189,7 +215,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                         $volume: 0.5
                     }));
                 },
-                $onLeave: () => buttonNewGame.actionRest(),
+                $onLeave: () => this.$buttonNewGame.actionRest(),
                 $transitions: [
 
                     {
@@ -210,7 +236,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                 $state: 'NEWGAMEACTIVATED',
                 $onEnter: () => {
 
-                    buttonNewGame.actionActivate();
+                    this.$buttonNewGame.actionActivate();
 
                     this.addSound(new Sound({
 
@@ -227,11 +253,11 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                 },
                 $onLeave: () => {
 
-                    buttonNewGame.actionRest();
+                    this.$buttonNewGame.actionRest();
 
                     if (STORAGE.get('continue') !== true) {
 
-                        buttonContinue.actionRest();
+                        this.$buttonContinue.actionRest();
                         STORAGE.set('continue', true);
                     }
 
@@ -249,7 +275,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                 $state: 'QUITSELECTED',
                 $onEnter: ({$previous}) => {
 
-                    buttonQuit.actionFocus();
+                    this.$buttonQuit.actionFocus();
 
                     if ($previous === 'QUITACTIVATED') {
 
@@ -262,7 +288,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                         $volume: 0.5
                     }));
                 },
-                $onLeave: () => buttonQuit.actionRest(),
+                $onLeave: () => this.$buttonQuit.actionRest(),
                 $transitions: [
 
                     {
@@ -279,7 +305,7 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                 $state: 'QUITACTIVATED',
                 $onEnter: () => {
 
-                    buttonQuit.actionActivate();
+                    this.$buttonQuit.actionActivate();
 
                     this.addSound(new Sound({
 
@@ -294,23 +320,38 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
                         $intensityFrequencyLow: 0
                     }));
                 },
-                $onLeave: () => {
+                $onLeave: async () => {
 
-                    buttonQuit.actionRest();
+                    this.$buttonQuit.actionRest();
 
                     if (STORAGE.get('continue') === true) {
 
-                        buttonContinue.actionDisable()
+                        this.$buttonContinue.actionDisable();
                         STORAGE.set('continue', false);
                     }
 
                     console.log('Quit');
+
+                    window.close();
+
+                    window.queueMicrotask(async () => {
+
+                        this.engine.terminate();
+
+                        await UTILS.sleep(1000);
+
+                        this.engine.initiate(60);
+
+                        await this.engine.preloadStage(StageMenu);
+
+                        this.engine.createStage(StageMenu);
+                    });
                 },
                 $transitions: [
 
                     {
                         $state: 'QUITSELECTED',
-                        $condition: ({$timer}) => $timer >= DEBOUNCESELECTION && checkCommandActivate() === false
+                        $condition: ({$timer}) => $timer >= DEBOUNCEQUIT && checkCommandActivate() === false
                     }
                 ]
             }
@@ -320,11 +361,44 @@ class ActorMenu extends FACTORIES.ActorWithPreloadables([
     }
 
     /**
+     * @type {Actor['onSetVisible']}
+     */
+    onSetVisible($visible) {
+
+        this.$buttonContinue.setVisible($visible);
+        this.$buttonNewGame.setVisible($visible);
+        this.$buttonDlc.setVisible($visible);
+        this.$buttonQuit.setVisible($visible);
+    }
+
+    /**
+     * @type {Actor['onSetZIndex']}
+     */
+    onSetZIndex($zIndex) {
+
+        this.$buttonContinue.setZIndex($zIndex);
+        this.$buttonNewGame.setZIndex($zIndex);
+        this.$buttonDlc.setZIndex($zIndex);
+        this.$buttonQuit.setZIndex($zIndex);
+    }
+
+    /**
      * @type {Actor['onTick']}
      */
     onTick($timetick) {
 
         this.$finiteStateMachineMenu.update($timetick);
+    }
+
+    /**
+     * @type {Actor['onTranslate']}
+     */
+    onTranslate($vector) {
+
+        this.$buttonContinue.translate($vector);
+        this.$buttonNewGame.translate($vector);
+        this.$buttonDlc.translate($vector);
+        this.$buttonQuit.translate($vector);
     }
 }
 

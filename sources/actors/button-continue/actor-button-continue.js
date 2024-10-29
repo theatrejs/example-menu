@@ -1,5 +1,4 @@
-import {Actor, FACTORIES, Timeline} from '@theatrejs/theatrejs';
-
+import {Actor, FACTORIES} from '@theatrejs/theatrejs';
 import * as PLUGINASEPRITE from '@theatrejs/plugin-aseprite';
 
 import asepriteButtonContinue from './button-continue-64x16.aseprite';
@@ -7,18 +6,34 @@ import asepriteButtonContinue from './button-continue-64x16.aseprite';
 class ActorButtonContinue extends FACTORIES.ActorWithPreloadables([PLUGINASEPRITE.FACTORIES.PreloadableAseprite(asepriteButtonContinue)]) {
 
     /**
-     * Stores the spritesheet.
-     * @type {PLUGINASEPRITE.Aseprite<('activated' | 'disabled' | 'focus' | 'idle')>}
+     * Stores the spritesheet actor.
+     * @type {Actor}
      * @private
      */
     $spritesheet;
 
     /**
-     * Stores the timeline.
-     * @type {Timeline}
+     * Animates a spritesheet from the given animation tag.
+     * @param {('activated' | 'disabled' | 'focus' | 'idle')} $animation The given animation tag.
      * @private
      */
-    $timeline;
+    $animateSpritesheet($animation) {
+
+        this.stage.removeActor(this.$spritesheet);
+
+        this.$spritesheet = this.stage.createActor(
+
+            PLUGINASEPRITE.FACTORIES.ActorWithSpritesheet({
+
+                $aseprite: /** @type {PLUGINASEPRITE.Aseprite<('activated' | 'disabled' | 'focus' | 'idle')>} **/(asepriteButtonContinue),
+                $loop: true,
+                $tag: $animation
+            })
+        )
+        .setVisible(this.visible)
+        .setZIndex(this.zIndex)
+        .translate(this.translation);
+    }
 
     /**
      * Triggers the 'activate' action.
@@ -26,8 +41,7 @@ class ActorButtonContinue extends FACTORIES.ActorWithPreloadables([PLUGINASEPRIT
      */
     actionActivate() {
 
-        this.$timeline = this.$spritesheet.createTimeline({$actor: this, $framerate: 10, $loop: true, $tag: 'activated'});
-        this.$timeline.seekTimecode(0);
+        this.$animateSpritesheet('activated');
     }
 
     /**
@@ -36,8 +50,7 @@ class ActorButtonContinue extends FACTORIES.ActorWithPreloadables([PLUGINASEPRIT
      */
     actionDisable() {
 
-        this.$timeline = this.$spritesheet.createTimeline({$actor: this, $framerate: 10, $loop: true, $tag: 'disabled'});
-        this.$timeline.seekTimecode(0);
+        this.$animateSpritesheet('disabled');
     }
 
     /**
@@ -46,8 +59,7 @@ class ActorButtonContinue extends FACTORIES.ActorWithPreloadables([PLUGINASEPRIT
      */
     actionFocus() {
 
-        this.$timeline = this.$spritesheet.createTimeline({$actor: this, $framerate: 10, $loop: true, $tag: 'focus'});
-        this.$timeline.seekTimecode(0);
+        this.$animateSpritesheet('focus');
     }
 
     /**
@@ -56,8 +68,15 @@ class ActorButtonContinue extends FACTORIES.ActorWithPreloadables([PLUGINASEPRIT
      */
     actionRest() {
 
-        this.$timeline = this.$spritesheet.createTimeline({$actor: this, $framerate: 10, $loop: true, $tag: 'idle'});
-        this.$timeline.seekTimecode(0);
+        this.$animateSpritesheet('idle');
+    }
+
+    /**
+     * @type {Actor['onBeforeRemove']}
+     */
+    onBeforeRemove() {
+
+        this.stage.removeActor(this.$spritesheet);
     }
 
     /**
@@ -65,17 +84,31 @@ class ActorButtonContinue extends FACTORIES.ActorWithPreloadables([PLUGINASEPRIT
      */
     onCreate() {
 
-        this.$spritesheet = asepriteButtonContinue;
-
         this.actionRest();
     }
 
     /**
-     * @type {Actor['onTick']}
+     * @type {Actor['onSetVisible']}
      */
-    onTick($timetick) {
+    onSetVisible($visible) {
 
-        this.$timeline.tick($timetick);
+        this.$spritesheet.setVisible($visible);
+    }
+
+    /**
+     * @type {Actor['onSetZIndex']}
+     */
+    onSetZIndex($zIndex) {
+
+        this.$spritesheet.setZIndex($zIndex);
+    }
+
+    /**
+     * @type {Actor['onTranslate']}
+     */
+    onTranslate($translation) {
+
+        this.$spritesheet.translate($translation);
     }
 }
 

@@ -2,8 +2,8 @@
     "author": "Alexandre Blondeau",
     "dependencies": {
 
-        "@theatrejs/plugin-aseprite": "1.0.0",
-        "@theatrejs/theatrejs": "1.7.0"
+        "@theatrejs/plugin-aseprite": "1.1.0",
+        "@theatrejs/theatrejs": "1.9.0"
     },
     "description": "🎮 A Game Menu example.",
     "devDependencies": {
@@ -49,11 +49,13 @@
     "scripts": {
 
         "distribution": "npm run distribution:clean && npm run distribution:generate",
-        "distribution:clean": "rm -rf ./distribution/bundle",
+        "distribution:clean": "rm -rf ./distribution/bundle/",
         "distribution:generate": "webpack --config ./webpack.production.js",
-        "github-pages": "npm run github-pages:clean && npm run github-pages:generate",
-        "github-pages:clean": "rm -rf ./docs",
-        "github-pages:generate": "cp -r ./distribution ./docs",
-        "start": "webpack-dev-server --config ./webpack.development.js --port 1234"
+        "distribution:start": "webpack-dev-server --config ./webpack.development.js --port 1337",
+        "github-pages": "npm run github-pages:distribution && npm run github-pages:clean && npm run github-pages:copy",
+        "github-pages:clean": "rm -rf ./docs/",
+        "github-pages:copy": "cp -r ./distribution/ ./docs/",
+        "github-pages:distribution": "npm run distribution",
+        "start": "npm run distribution:start"
     }
 }
